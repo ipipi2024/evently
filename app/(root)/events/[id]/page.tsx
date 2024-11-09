@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import CheckoutButton from '@/components/shared/CheckoutButton'
-import Collection from '@/components/shared/Collections'
+import Collection from '@/components/shared/Collection'
 import { getEventById, getRelatedEventsByCategory } from '@/lib/actions/event.actions'
 import { formatDateTime } from '@/lib/utils'
 import Image from 'next/image'
@@ -37,7 +37,7 @@ const EventDetails = async ({
             alt="hero image"
             width={1000}
             height={1000}
-            className="h-full min-h-[300px] object-cover object-center"
+            className="h-full min-h-[300px] object-contain object-center"
           />
 
           <div className="flex w-full flex-col gap-8 p-5 md:p-10">
