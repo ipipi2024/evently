@@ -4,16 +4,17 @@ import Collection from '@/components/shared/Collections'
 import { getEventById, getRelatedEventsByCategory } from '@/lib/actions/event.actions'
 import { formatDateTime } from '@/lib/utils'
 import Image from 'next/image'
+import { SearchParamProps } from '@/types'
 
-interface PageProps {
-  params: Promise<{ id: string }>
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}
+// interface PageProps {
+//   params: Promise<{ id: string }>
+//   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+// }
 
 const EventDetails = async ({ 
   params,
   searchParams,
-}: PageProps) => {
+}: SearchParamProps) => {
   // Await the params and searchParams
   const { id } = await params
   const searchParamsData = await searchParams

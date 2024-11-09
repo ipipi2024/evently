@@ -5,17 +5,18 @@ import { Button } from '@/components/ui/button'
 import { getAllEvents } from '@/lib/actions/event.actions';
 import Image from 'next/image'
 import Link from 'next/link'
+import { SearchParamProps } from '@/types';
 
-interface PageProps {
-  searchParams: Promise<{
-    page?: string
-    query?: string
-    category?: string
-    [key: string]: string | string[] | undefined
-  }>
-}
+// interface PageProps {
+//   searchParams: Promise<{
+//     page?: string
+//     query?: string
+//     category?: string
+//     [key: string]: string | string[] | undefined
+//   }>
+// }
 
-export default async function Home({ searchParams }: PageProps) {
+export default async function Home({ searchParams }: SearchParamProps) {
   const searchParamsData = await searchParams;
   
   const page = Number(searchParamsData?.page) || 1;
