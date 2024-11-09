@@ -11,7 +11,7 @@ const EventDetails = async ({ params: { id }, searchParams }: SearchParamProps) 
   const relatedEvents = await getRelatedEventsByCategory({
     categoryId: event.category._id,
     eventId: event._id,
-    page: searchParams.page as string,
+    page: typeof searchParams.page === 'string' ? searchParams.page : '1', // Default to '1' if undefined
   })
 
   return (
