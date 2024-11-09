@@ -1,17 +1,19 @@
 import EventForm from "@/components/shared/EventForm"
 import { getEventById } from "@/lib/actions/event.actions"
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server"
 
-type UpdateEventProps = {
-  params: {
-    id: string
-  }
+interface PageProps {
+  params: Promise<{ id: string }>
 }
 
-const UpdateEvent = async ({ params: { id } }: UpdateEventProps) => {
-  const { sessionClaims } = await auth();
+const UpdateEvent = async ({ params }: PageProps) => {
+  // Await both the params and auth in parallel for better performance
+  const [{ id }, { sessionClaims }] = await Promise.all([
+    params,
+    auth()
+  ])
 
-  const userId = sessionClaims?.userId as string;
+  const userId = sessionClaims?.userId as string
   const event = await getEventById(id)
 
   return (
