@@ -4,11 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 
 const CreateEvent =  async () => {
     const authData = await auth();
-//   const { sessionClaims } = auth();
-  // console.log(authData);
-
   const userId =  authData.sessionClaims?.userId as string;
-  console.log(userId);
 
   return (
     <>
