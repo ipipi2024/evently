@@ -8,26 +8,23 @@ import {
 import { formatDateTime } from "@/lib/utils";
 import Image from "next/image";
 import { SearchParamProps } from "@/types";
-
-// interface PageProps {
-//   params: Promise<{ id: string }>
-//   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-// }
+import { useState } from "react";
+import InviteButton from "@/components/shared/InviteButton";
 
 const EventDetails = async ({ params, searchParams }: SearchParamProps) => {
-  // Await the params and searchParams
   const { id } = await params;
   const searchParamsData = await searchParams;
   const currentPage =
     typeof searchParamsData?.page === "string" ? searchParamsData.page : "1";
 
   const event = await getEventById(id);
-
   const relatedEvents = await getRelatedEventsByCategory({
     categoryId: event.category._id,
     eventId: event._id,
     page: currentPage,
   });
+
+  
 
   return (
     <>
@@ -44,7 +41,7 @@ const EventDetails = async ({ params, searchParams }: SearchParamProps) => {
           <div className="flex w-full flex-col gap-8 p-5 md:p-10">
             <div className="flex flex-col gap-6">
               <h2 className="h2-bold">{event.title}</h2>
-
+              
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <div className="flex gap-3">
                   <p className="p-bold-20 rounded-full bg-green-500/10 px-5 py-2 text-green-700">
@@ -56,48 +53,31 @@ const EventDetails = async ({ params, searchParams }: SearchParamProps) => {
                 </div>
 
                 <p className="p-medium-18 ml-2 mt-2 sm:mt-0">
-                  by{" "}
-                  <span className="text-primary-500">
-                    {event.organizer.firstName} {event.organizer.lastName}
-                  </span>
+                  by <span className="text-primary-500">{event.organizer.firstName} {event.organizer.lastName}</span>
                 </p>
               </div>
             </div>
-
+            <div className="flex justify-start gap-5 align-middle">
             <CheckoutButton event={event} />
+
+            {/* Invite Friends Button */}
+            <InviteButton event={event}/>
+            </div>
 
             <div className="flex flex-col gap-5">
               <div className="flex gap-2 md:gap-3">
-                <Image
-                  src="/assets/icons/calendar.svg"
-                  alt="calendar"
-                  width={32}
-                  height={32}
-                />
+                <Image src="/assets/icons/calendar.svg" alt="calendar" width={32} height={32} />
                 <div className="p-medium-16 lg:p-regular-20 flex flex-wrap items-center">
-                  <p>
-                    {formatDateTime(event.startDateTime).dateOnly} -{" "}
-                    {formatDateTime(event.startDateTime).timeOnly}
-                  </p>
-                  <p>
-                    {formatDateTime(event.endDateTime).dateOnly} -{" "}
-                    {formatDateTime(event.endDateTime).timeOnly}
-                  </p>
+                  <p>{formatDateTime(event.startDateTime).dateOnly} - {formatDateTime(event.startDateTime).timeOnly}</p>
+                  <p>{formatDateTime(event.endDateTime).dateOnly} - {formatDateTime(event.endDateTime).timeOnly}</p>
                 </div>
               </div>
 
               <div className="p-regular-20 flex items-center gap-3">
-                <Image
-                  src="/assets/icons/location.svg"
-                  alt="location"
-                  width={32}
-                  height={32}
-                />
+                <Image src="/assets/icons/location.svg" alt="location" width={32} height={32} />
                 {event.location.toLowerCase() !== "online" ? (
                   <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                      event.location
-                    )}`}
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-medium-16 lg:p-regular-20 text-primary-500 underline"
@@ -105,9 +85,7 @@ const EventDetails = async ({ params, searchParams }: SearchParamProps) => {
                     {event.location}
                   </a>
                 ) : (
-                  <p className="p-medium-16 lg:p-regular-20">
-                    {event.location}
-                  </p>
+                  <p className="p-medium-16 lg:p-regular-20">{event.location}</p>
                 )}
               </div>
             </div>
