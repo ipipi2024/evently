@@ -19,7 +19,7 @@ import { eventDefaultValues } from "@/constants";
 import Dropdown from "./Dropdown";
 import { Textarea } from "@/components/ui/textarea";
 import { FileUploader } from "./FileUploader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import DatePicker from "react-datepicker";
 import { useUploadThing } from "@/lib/uploadthing";
@@ -29,8 +29,24 @@ import { Checkbox } from "../ui/checkbox";
 import { useRouter } from "next/navigation";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
 import { IEvent } from "@/lib/database/models/event.model";
-
-
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { Check, ChevronsUpDown, MapPin } from "lucide-react";
+import { autocomplete } from "@/lib/google";
+import { PlaceAutocompleteResult } from "@googlemaps/google-maps-services-js";
+import { Switch } from "../ui/switch";
 
 type EventFormProps = {
   userId: string;
@@ -41,6 +57,25 @@ type EventFormProps = {
 
 const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
   const [files, setFiles] = useState<File[]>([]);
+  const { handleSubmit, control } = useForm();
+  const [open, setOpen] = useState(false);
+  const [predictions, setPredictions] = useState<PlaceAutocompleteResult[]>([]);
+  const [locationInput, setLocationInput] = useState("");
+  const [isManualLocation, setIsManualLocation] = useState(false); // State for toggle
+
+// Fetch autocomplete predictions with a debounce
+useEffect(() => {
+  if (isManualLocation) return; // Skip autocomplete if manual input is selected
+  const fetchPredictions = async () => {
+    if (locationInput.length > 2) {
+      const results = await autocomplete(locationInput);
+      setPredictions(results ?? []);
+    }
+  };
+  const debounceTimer = setTimeout(fetchPredictions, 300);
+  return () => clearTimeout(debounceTimer);
+}, [locationInput, isManualLocation]);
+
   const initialValues =
     event && type === "Update"
       ? {
@@ -185,33 +220,88 @@ const EventForm = ({ userId, type, event, eventId }: EventFormProps) => {
             )}
           />
         </div>
+        <div className="flex items-center gap-2">
+          <p>Manual Location:</p>
+          <Switch checked={isManualLocation} onCheckedChange={setIsManualLocation} />
+        </div>
+
 
         <div className="flex flex-col gap-5 md:flex-row">
-          <FormField
-            control={form.control}
-            name="location"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl>
-                  <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
-                    <Image
-                      src="/assets/icons/location-grey.svg"
-                      alt="calendar"
-                      width={24}
-                      height={24}
-                    />
-
-                    <Input
-                      placeholder="Event location or Online"
-                      {...field}
-                      className="input-field"
-                    />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+        <FormField
+          control={form.control}
+          name="location"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                {isManualLocation ? (
+                  // Render simple input field for manual entry
+                  <Input
+                    placeholder="Enter location manually"
+                    value={field.value}
+                    onChange={(e) => field.onChange(e.target.value)}
+                    className="input-field"
+                  />
+                ) : (
+                  // Render Google autocomplete dropdown as before
+                  <Popover open={open} onOpenChange={setOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={open}
+                        className="w-full justify-between rounded-full bg-grey-50 px-4 py-2 h-[54px]"
+                      >
+                        <div className="flex items-center">
+                          <MapPin className="mr-2 h-4 w-4 shrink-0 text-grey-600" />
+                          <span className="text-grey-600">
+                            {field.value || "Event location"}
+                          </span>
+                        </div>
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0">
+                      <Command shouldFilter={false}>
+                        <CommandInput
+                          placeholder="Search location..."
+                          value={locationInput}
+                          onValueChange={setLocationInput}
+                        />
+                        <CommandList>
+                          <CommandEmpty>No results found.</CommandEmpty>
+                          <CommandGroup>
+                            {predictions.map((prediction) => (
+                              <CommandItem
+                                key={prediction.place_id}
+                                onSelect={() => {
+                                  field.onChange(prediction.description);
+                                  setOpen(false);
+                                  form.trigger("location"); // Trigger validation
+                                }}
+                                className="cursor-pointer"
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    field.value === prediction.description
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                {prediction.description}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                )}
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         </div>
 
         <div className="flex flex-col gap-5 md:flex-row">
