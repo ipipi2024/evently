@@ -102,7 +102,7 @@ const EventDetails = async ({ params, searchParams }: SearchParamProps) => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+          <div className="flex flex-row gap-4 sm:items-center">
             <CheckoutButton
               event={event}
               
