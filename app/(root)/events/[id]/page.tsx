@@ -105,11 +105,11 @@ const EventDetails = async ({ params, searchParams }: SearchParamProps) => {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <CheckoutButton
               event={event}
-              className="button bg-primary-500 hover:bg-primary-600 text-white px-8 py-3 rounded-full transition transform hover:scale-105 hover:shadow-lg"
+              
             />
             <InviteButton
               event={event}
-              className="button border-2 border-white hover:bg-white hover:text-primary-500 px-8 py-3 rounded-full transition transform hover:scale-105 hover:shadow-lg"
+            
             />
           </div>
         </div>
