@@ -1,3 +1,5 @@
+"use client"
+
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 import Image from "next/image"
 import Link from "next/link"
@@ -7,20 +9,17 @@ import * as React from "react"
 
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/shared/ModeToggle"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { useTheme } from "next-themes"
+
 
 const Header = () => {
+  const { theme } = useTheme();
   return (
     <header className="w-full border-b">
       <div className="wrapper flex items-center justify-between">
         <Link href="/" className="w-36">
           <Image 
-            src="/assets/images/logo.svg" 
+            src={theme === "dark" ? "/assets/images/logo-white.svg"  : "/assets/images/logo.svg"} 
             width={128} 
             height={38} 
             alt="Evently logo" 
