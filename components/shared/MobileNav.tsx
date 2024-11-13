@@ -4,17 +4,25 @@ import { useTheme } from "next-themes";
 import {
     Sheet,
     SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
 import Image from "next/image";
 import { Separator } from "../ui/separator";
 import NavItems from "./NavItems";
+import { useEffect, useState } from "react";
 
 const MobileNav = () => {
     const { theme } = useTheme();
+    const [isThemeLoaded, setIsThemeLoaded] = useState(false);
+
+    useEffect(() => {
+        // Ensure theme is set before rendering
+        setIsThemeLoaded(true);
+    }, [theme]);
+
+    if (!isThemeLoaded) {
+        return null; // Optionally, show a loading state here
+    }
 
     return (
         <nav className="md:hidden">
@@ -30,7 +38,7 @@ const MobileNav = () => {
                 </SheetTrigger>
                 <SheetContent className="dark:bg-gray-900 flex flex-col gap-6 bg-white md:hidden">
                     <Image 
-                        src={theme === "dark" ?"/assets/images/logo-white.svg"  : "/assets/images/logo.svg"}
+                        src={theme === "dark" ? "/assets/images/logo-white.svg" : "/assets/images/logo.svg"}
                         alt="logo"
                         width={128}
                         height={38}
