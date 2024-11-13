@@ -81,6 +81,7 @@ const Dropdown = ({ value, onChangeHandler }: DropdownProps) => {
                   placeholder="Category name"
                   className="input-field mt-3"
                   onChange={(e) => setNewCategory(e.target.value)}
+                  autoFocus={false}
                 />
               </AlertDialogDescription>
             </AlertDialogHeader>
