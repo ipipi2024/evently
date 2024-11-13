@@ -24,7 +24,7 @@ import {
               className="cursor-pointer"
             />
           </SheetTrigger>
-          <SheetContent className="flex flex-col gap-6 bg-white md:hidden">
+          <SheetContent className="dark:bg-gray-900 flex flex-col gap-6 bg-white md:hidden">
             <Image 
               src="/assets/images/logo.svg"
               alt="logo"
