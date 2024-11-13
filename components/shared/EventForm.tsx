@@ -148,9 +148,9 @@ useEffect(() => {
 
   return (
     <Form {...form}>
-      <form
+      <form 
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-5"
+        className=" flex flex-col gap-5"
       >
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
@@ -162,7 +162,7 @@ useEffect(() => {
                   <Input
                     placeholder="Event title"
                     {...field}
-                    className="input-field"
+                    className="dark:bg-gray-900 input-field"
                   />
                 </FormControl>
                 <FormMessage />
@@ -175,10 +175,12 @@ useEffect(() => {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
+                  <div className="dark:bg-gray-900">
                   <Dropdown
                     onChangeHandler={field.onChange}
                     value={field.value}
                   />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -220,7 +222,7 @@ useEffect(() => {
             )}
           />
         </div>
-        <div className="flex items-center gap-2">
+        <div className="dark:bg-dark flex items-center gap-2">
           <p>Manual Location:</p>
           <Switch checked={isManualLocation} onCheckedChange={setIsManualLocation} />
         </div>
@@ -249,7 +251,7 @@ useEffect(() => {
                         variant="outline"
                         role="combobox"
                         aria-expanded={open}
-                        className="w-full justify-between rounded-full bg-grey-50 px-4 py-2 h-[54px]"
+                        className="dark:bg-gray-900 w-full justify-between rounded-full bg-grey-50 px-4 py-2 h-[54px]"
                       >
                         <div className="flex items-center">
                           <MapPin className="mr-2 h-4 w-4 shrink-0 text-grey-600" />
@@ -311,7 +313,7 @@ useEffect(() => {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
+                  <div className="dark:bg-gray-900 flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
                     <Image
                       src="/assets/icons/calendar.svg"
                       alt="calendar"
@@ -343,7 +345,7 @@ useEffect(() => {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
+                  <div className="dark:bg-gray-900 flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
                     <Image
                       src="/assets/icons/calendar.svg"
                       alt="calendar"
@@ -377,7 +379,7 @@ useEffect(() => {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
+                  <div className="dark:bg-gray-900 flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
                     <Image
                       src="/assets/icons/dollar.svg"
                       alt="dollar"
@@ -389,7 +391,7 @@ useEffect(() => {
                       type="number"
                       placeholder="Price"
                       {...field}
-                      className="p-regular-16 border-0 bg-grey-50 outline-offset-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                      className="dark:bg-gray-900 p-regular-16 border-0 bg-grey-50 outline-offset-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
                     <FormField
                       control={form.control}
@@ -426,9 +428,9 @@ useEffect(() => {
             control={form.control}
             name="url"
             render={({ field }) => (
-              <FormItem className="w-full">
+              <FormItem className=" w-full">
                 <FormControl>
-                  <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
+                  <div className="dark:bg-gray-900 flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
                     <Image
                       src="/assets/icons/link.svg"
                       alt="link"
@@ -439,7 +441,7 @@ useEffect(() => {
                     <Input
                       placeholder="URL"
                       {...field}
-                      className="input-field"
+                      className="dark:bg-gray-900 input-field"
                     />
                   </div>
                 </FormControl>
@@ -453,7 +455,7 @@ useEffect(() => {
           type="submit"
           size="lg"
           disabled={form.formState.isSubmitting}
-          className="button col-span-2 w-full"
+          className="dark:text-primary-50 button col-span-2 w-full"
         >
           {form.formState.isSubmitting ? "Submitting..." : `${type} Event `}
         </Button>

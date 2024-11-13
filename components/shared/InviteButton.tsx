@@ -6,11 +6,12 @@ import React from "react";
 import { Button } from "../ui/button";
 
 const InviteButton = ({ event }: {event: IEvent}) => {
+  
   const handleShare = () => {
     const shareData = {
       title: `Join me at ${event.title}`,
       text: `Check out this event: ${event.title}`,
-      url: event.url,
+      url: `http://localhost:3000/events/${event._id}`,
     };
 
     if (navigator.share) {
